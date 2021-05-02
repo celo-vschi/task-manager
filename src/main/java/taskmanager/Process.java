@@ -32,6 +32,10 @@ public class Process {
         logger.info("Killed process " + pid);
     }
 
+    public Prio getPrio() {
+        return prio;
+    }
+
     public int getIntPrio() {
         return prio.getIntValue();
     }

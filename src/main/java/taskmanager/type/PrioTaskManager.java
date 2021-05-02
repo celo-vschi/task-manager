@@ -26,7 +26,7 @@ public class PrioTaskManager extends AbstractTaskManager {
         if (processes.size() == maxSize) {
             Process leastImportantProcess = getLeastImportantProcess();
             if (process.getIntPrio() > leastImportantProcess.getIntPrio()) {
-                processes.remove(leastImportantProcess);
+                kill(leastImportantProcess);
             } else {
                 shouldAdd = false;
                 logger.info("No process with a lower priority than " + process + " was found");

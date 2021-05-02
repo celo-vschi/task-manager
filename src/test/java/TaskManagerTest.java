@@ -45,6 +45,20 @@ public class TaskManagerTest {
         assertTrue(processes.contains(p2));
         assertFalse(processes.contains(p3));
         assertEquals(2, processes.size());
+
+        // killed p2
+        underTest.kill(p2);
+        processes = underTest.list();
+        assertTrue(processes.contains(p1));
+        assertFalse(processes.contains(p2));
+        assertEquals(1, processes.size());
+
+        // adding p3 again; this time it should work
+        underTest.add(p3);
+        processes = underTest.list();
+        assertTrue(processes.contains(p1));
+        assertTrue(processes.contains(p3));
+        assertEquals(2, processes.size());
     }
 
 
@@ -125,6 +139,54 @@ public class TaskManagerTest {
         assertFalse(processes.contains(shouldBeAdded2));
         assertTrue(processes.contains(p4));
         assertEquals(6, processes.size());
+    }
+
+    @Test
+    public void testKillAll() {
+        underTest = new DefaultTaskManager(3);
+
+        Process p1 = new Process(Prio.LOW);
+        Process p2 = new Process(Prio.MEDIUM);
+        Process p3 = new Process(Prio.HIGH);
+
+        underTest.add(p1);
+        underTest.add(p2);
+        underTest.add(p3);
+
+        Collection<Process> processes = underTest.list();
+        assertEquals(3, processes.size());
+
+        underTest.killAll();
+        processes = underTest.list();
+        assertTrue(processes.isEmpty());
+    }
+
+    @Test
+    public void testKillGroup() {
+        underTest = new DefaultTaskManager(6);
+
+        Process p1 = new Process(Prio.LOW);
+        Process p2 = new Process(Prio.MEDIUM);
+        Process p3 = new Process(Prio.HIGH);
+        Process p4 = new Process(Prio.LOW);
+        Process p5 = new Process(Prio.MEDIUM);
+        Process p6 = new Process(Prio.HIGH);
+
+        underTest.add(p1);
+        underTest.add(p2);
+        underTest.add(p3);
+        underTest.add(p4);
+        underTest.add(p5);
+        underTest.add(p6);
+
+        Collection<Process> processes = underTest.list();
+        assertEquals(6, processes.size());
+
+        underTest.killGroup(Prio.HIGH);
+        processes = underTest.list();
+        assertEquals(4, processes.size());
+        assertFalse(processes.contains(p3));
+        assertFalse(processes.contains(p6));
     }
 
 }

@@ -19,10 +19,11 @@ public class FifoTaskManager extends AbstractTaskManager {
         LinkedList<Process> fifoProcesses = (LinkedList<Process>) processes;
 
         if (processes.size() == maxSize) {
-            Process last = fifoProcesses.removeFirst();
-            last.kill();
+            Process firstProcess = fifoProcesses.getFirst();
+            kill(firstProcess);
         }
         fifoProcesses.addLast(process);
     }
+
 
 }
