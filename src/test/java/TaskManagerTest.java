@@ -1,5 +1,4 @@
 import org.junit.Test;
-import taskmanager.Prio;
 import taskmanager.Process;
 import taskmanager.type.AbstractTaskManager;
 import taskmanager.type.DefaultTaskManager;
@@ -23,9 +22,9 @@ public class TaskManagerTest {
     public void testDefaultTaskManager() {
         underTest = new DefaultTaskManager(2);
 
-        Process p1 = new Process(Prio.LOW);
-        Process p2 = new Process(Prio.MEDIUM);
-        Process p3 = new Process(Prio.HIGH);
+        Process p1 = new Process(Process.Prio.LOW);
+        Process p2 = new Process(Process.Prio.MEDIUM);
+        Process p3 = new Process(Process.Prio.HIGH);
 
         underTest.add(p1);
         Collection<Process> processes = underTest.list();
@@ -66,9 +65,9 @@ public class TaskManagerTest {
     public void testFifoTaskManager() {
         underTest = new FifoTaskManager(2);
 
-        Process p1 = new Process(Prio.LOW);
-        Process p2 = new Process(Prio.MEDIUM);
-        Process p3 = new Process(Prio.HIGH);
+        Process p1 = new Process(Process.Prio.LOW);
+        Process p2 = new Process(Process.Prio.MEDIUM);
+        Process p3 = new Process(Process.Prio.HIGH);
 
         underTest.add(p1);
         Collection<Process> processes = underTest.list();
@@ -91,15 +90,15 @@ public class TaskManagerTest {
     }
 
     @Test
-    public void testPrioTaskManager() throws InterruptedException {
+    public void testPrioTaskManager() {
         underTest = new PrioTaskManager(6);
 
-        Process p1 = new Process(Prio.LOW);
-        Process p2 = new Process(Prio.MEDIUM);
-        Process p3 = new Process(Prio.HIGH);
-        Process p4 = new Process(Prio.LOW);
-        Process p5 = new Process(Prio.MEDIUM);
-        Process p6 = new Process(Prio.HIGH);
+        Process p1 = new Process(Process.Prio.LOW);
+        Process p2 = new Process(Process.Prio.MEDIUM);
+        Process p3 = new Process(Process.Prio.HIGH);
+        Process p4 = new Process(Process.Prio.LOW);
+        Process p5 = new Process(Process.Prio.MEDIUM);
+        Process p6 = new Process(Process.Prio.HIGH);
 
         underTest.add(p1);
         underTest.add(p2);
@@ -118,14 +117,14 @@ public class TaskManagerTest {
         assertEquals(6, processes.size());
 
         // this process should not be added, no lower prio is in the list
-        Process shouldNotBeAdded = new Process(Prio.LOW);
+        Process shouldNotBeAdded = new Process(Process.Prio.LOW);
         underTest.add(shouldNotBeAdded);
         processes = underTest.list();
         assertFalse(processes.contains(shouldNotBeAdded));
         assertEquals(6, processes.size());
 
         // this process should be added and p1 (lowest prio and oldest) should be removed
-        Process shouldBeAdded1 = new Process(Prio.MEDIUM);
+        Process shouldBeAdded1 = new Process(Process.Prio.MEDIUM);
         underTest.add(shouldBeAdded1);
         processes = underTest.list();
         assertFalse(processes.contains(shouldBeAdded1));
@@ -133,7 +132,7 @@ public class TaskManagerTest {
         assertEquals(6, processes.size());
 
         // this process should be added and p4 (lowest prio and oldest) should be removed
-        Process shouldBeAdded2 = new Process(Prio.HIGH);
+        Process shouldBeAdded2 = new Process(Process.Prio.HIGH);
         underTest.add(shouldBeAdded2);
         processes = underTest.list();
         assertFalse(processes.contains(shouldBeAdded2));
@@ -145,9 +144,9 @@ public class TaskManagerTest {
     public void testKillAll() {
         underTest = new DefaultTaskManager(3);
 
-        Process p1 = new Process(Prio.LOW);
-        Process p2 = new Process(Prio.MEDIUM);
-        Process p3 = new Process(Prio.HIGH);
+        Process p1 = new Process(Process.Prio.LOW);
+        Process p2 = new Process(Process.Prio.MEDIUM);
+        Process p3 = new Process(Process.Prio.HIGH);
 
         underTest.add(p1);
         underTest.add(p2);
@@ -165,12 +164,12 @@ public class TaskManagerTest {
     public void testKillGroup() {
         underTest = new DefaultTaskManager(6);
 
-        Process p1 = new Process(Prio.LOW);
-        Process p2 = new Process(Prio.MEDIUM);
-        Process p3 = new Process(Prio.HIGH);
-        Process p4 = new Process(Prio.LOW);
-        Process p5 = new Process(Prio.MEDIUM);
-        Process p6 = new Process(Prio.HIGH);
+        Process p1 = new Process(Process.Prio.LOW);
+        Process p2 = new Process(Process.Prio.MEDIUM);
+        Process p3 = new Process(Process.Prio.HIGH);
+        Process p4 = new Process(Process.Prio.LOW);
+        Process p5 = new Process(Process.Prio.MEDIUM);
+        Process p6 = new Process(Process.Prio.HIGH);
 
         underTest.add(p1);
         underTest.add(p2);
@@ -182,7 +181,7 @@ public class TaskManagerTest {
         Collection<Process> processes = underTest.list();
         assertEquals(6, processes.size());
 
-        underTest.killGroup(Prio.HIGH);
+        underTest.killGroup(Process.Prio.HIGH);
         processes = underTest.list();
         assertEquals(4, processes.size());
         assertFalse(processes.contains(p3));

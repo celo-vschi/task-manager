@@ -1,12 +1,12 @@
 package taskmanager;
 
-import taskmanager.utils.Utils;
-
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class Process {
 
+    private static final Random RANDOM = new Random();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private Long pid;
@@ -23,13 +23,17 @@ public class Process {
     }
 
     public Process(Prio prio) {
-        this.pid = Utils.generatePid();
+        this.pid = RANDOM.nextLong();
         this.prio = prio;
         this.creationTime = LocalDateTime.now();
     }
 
     public void kill() {
         logger.info("Killed process " + pid);
+    }
+
+    public Long getPid() {
+        return pid;
     }
 
     public Prio getPrio() {
@@ -42,5 +46,23 @@ public class Process {
 
     public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    public enum Prio {
+
+        HIGH(0),
+        MEDIUM(1),
+        LOW(2);
+
+        private final int intValue;
+
+        Prio(int intValue) {
+            this.intValue = intValue;
+        }
+
+        public int getIntValue() {
+            return this.intValue;
+        }
+
     }
 }

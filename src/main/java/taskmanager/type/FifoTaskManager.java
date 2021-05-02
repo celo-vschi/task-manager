@@ -3,11 +3,8 @@ package taskmanager.type;
 import taskmanager.Process;
 
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 public class FifoTaskManager extends AbstractTaskManager {
-
-    final Logger logger = Logger.getLogger(FifoTaskManager.class.getName());
 
     public FifoTaskManager(int maxSize) {
         super(maxSize);
